@@ -4,11 +4,12 @@ function(truss_copy_libraries target target_libraries)
     foreach(library_path ${target_libraries})
         # Extract library name from full path.
         get_filename_component(library_file "${library_path}" NAME)
+        get_filename_component(library_ext "${library_path}" EXT)
 
         # On Mac, we need to relocate the library RPATH.
         # This is handled manually as a post-build step because of wild
         # inconsistencies in how the Mac RPATH is handled in various libraries.
-        if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+        if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin" AND (NOT (library_ext STREQUAL ".a")))
             add_custom_command(
                 TARGET "${target}" POST_BUILD
                 COMMAND install_name_tool
@@ -47,7 +48,7 @@ function(truss_copy_binaries target target_binaries)
 endfunction()
 
 # Copies a list of includes to the `dist` bin directory.
-function(truss_copy_includes target target_includes)
+function(truss_copy_includes target dest_prefix target_includes)
     foreach(include_path ${target_includes})
         # Extract include name from full path.
         get_filename_component(include_file "${include_path}" NAME)
@@ -56,7 +57,7 @@ function(truss_copy_includes target target_includes)
         add_custom_command(
             TARGET "${target}" POST_BUILD
             COMMAND "${CMAKE_COMMAND}"
-            ARGS -E copy "${include_path}" "${DIST_DIR}/include/${include_file}"
+            ARGS -E copy "${include_path}" "${DIST_DIR}/include/${dest_prefix}/${include_file}"
             BYPRODUCTS "${DIST_DIR}/include/${include_file}"
             COMMENT "Installed '${include_file}' include to distribution directory."
         )

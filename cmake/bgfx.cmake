@@ -102,11 +102,20 @@ set(bgfx_INCLUDE_DIR "${SOURCE_DIR}/include")
 set(bgfx_LIBRARIES_DIR "${SOURCE_DIR}/.build/${bgfx_SYSTEM_NAME}/bin")
 set(bgfx_LIBRARY "${bgfx_LIBRARIES_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}bgfx-shared-libRelease${CMAKE_SHARED_LIBRARY_SUFFIX}")
 set(bgfx_IMPLIB "${bgfx_LIBRARIES_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}bgfx-shared-libRelease${CMAKE_STATIC_LIBRARY_SUFFIX}")
-set(bgfx_LIBRARIES
-    "${bgfx_LIBRARY}"
-    "${bgfx_IMPLIB}"
-    "${bgfx_LIBRARIES_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}bgfxRelease${CMAKE_STATIC_LIBRARY_SUFFIX}"
-)
+
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
+    set(bgfx_LIBRARIES
+        "${bgfx_LIBRARY}"
+        "${bgfx_IMPLIB}"
+        "${bgfx_LIBRARIES_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}bgfxRelease${CMAKE_STATIC_LIBRARY_SUFFIX}"
+    ) 
+else()
+    set(bgfx_LIBRARIES
+        "${bgfx_LIBRARY}"
+        "${bgfx_LIBRARIES_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}bgfxRelease${CMAKE_STATIC_LIBRARY_SUFFIX}"
+    )
+endif()
+
 set(bgfx_BINARIES
     "${bgfx_LIBRARIES_DIR}/shadercRelease${CMAKE_EXECUTABLE_SUFFIX}"
     "${bgfx_LIBRARIES_DIR}/texturecRelease${CMAKE_EXECUTABLE_SUFFIX}"
@@ -153,5 +162,5 @@ endif()
 
 # Create install commands to install the shared libs.
 truss_copy_libraries(bgfx_EXTERNAL "${bgfx_LIBRARIES}")
-truss_copy_includes(bgfx_EXTERNAL "${bgfx_INCLUDES}")
+truss_copy_includes(bgfx_EXTERNAL "bgfx" "${bgfx_INCLUDES}")
 truss_copy_binaries(bgfx_EXTERNAL "${bgfx_BINARIES}")
