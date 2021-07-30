@@ -15,14 +15,10 @@ void nvgDeleteC(NVGcontext* _ctx)
 
 void nvgSetViewIdC(NVGcontext* _ctx, uint16_t _viewId)
 {
-	struct NVGparams* params = nvgInternalParams(_ctx);
-	struct GLNVGcontext* gl = (struct GLNVGcontext*)params->userPtr;
-	gl->m_viewId = _viewId;
+	nvgSetViewId(_ctx, _viewId);
 }
 
 uint16_t nvgGetViewIdC(struct NVGcontext* _ctx)
 {
-	struct NVGparams* params = nvgInternalParams(_ctx);
-	struct GLNVGcontext* gl = (struct GLNVGcontext*)params->userPtr;
-	return gl->m_viewId;
+	return nvgGetViewId(_ctx);
 }
