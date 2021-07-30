@@ -50,20 +50,10 @@ else()
 endif()
 
 # Configure platform-specific build commands.
-set(bgfx_PATCH_COMMAND cp -r "${CMAKE_CURRENT_SOURCE_DIR}/overrides/bgfx/" "<SOURCE_DIR>/")
-
-if("${CMAKE_GENERATOR}" MATCHES "Visual Studio 14 2015")
-    set(bgfx_COMPILER "vs2015")
-    set(bgfx_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "BX_DIR=${bx_DIR}" "BIMG_DIR=${bimg_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --with-tools --with-shared-lib "${bgfx_COMPILER}")
-    set(bgfx_BUILD_COMMAND "${CMAKE_VS_DEVENV_COMMAND}" "<SOURCE_DIR>/.build/projects/${bgfx_COMPILER}/bgfx.sln" /Build Release|x64)
-elseif("${CMAKE_GENERATOR}" MATCHES "Visual Studio 15 2017")
-    set(bgfx_COMPILER "vs2017")
-    set(bgfx_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "BX_DIR=${bx_DIR}" "BIMG_DIR=${bimg_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --with-tools --with-shared-lib "${bgfx_COMPILER}")
-    set(bgfx_BUILD_COMMAND "${CMAKE_VS_DEVENV_COMMAND}" "<SOURCE_DIR>/.build/projects/${bgfx_COMPILER}/bgfx.sln" /Build Release|x64)
-elseif("${CMAKE_GENERATOR}" MATCHES "Visual Studio 16 2019")
+if("${CMAKE_GENERATOR}" MATCHES "Visual Studio 16 2019")
     set(bgfx_SYSTEM_NAME "win64_vs2019")
     set(bgfx_COMPILER "vs2019")
-    set(bgfx_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "BX_DIR=${bx_DIR}" "BIMG_DIR=${bimg_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --with-tools --with-shared-lib "${bgfx_COMPILER}")
+    set(bgfx_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "BX_DIR=${bx_DIR}" "BIMG_DIR=${bimg_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --with-tools --with-nanovg --with-shared-lib "${bgfx_COMPILER}")
     set(bgfx_BUILD_COMMAND "${CMAKE_VS_DEVENV_COMMAND}" "<SOURCE_DIR>/.build/projects/${bgfx_COMPILER}/bgfx.sln" /Build Release|x64)
 elseif("${CMAKE_GENERATOR}" STREQUAL "Unix Makefiles")
     set(bgfx_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "BX_DIR=${bx_DIR}" "BIMG_DIR=${bimg_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --with-tools --with-nanovg --with-shared-lib "--gcc=${bgfx_GENIE_GCC}" gmake)
@@ -74,6 +64,9 @@ elseif("${CMAKE_GENERATOR}" STREQUAL "Unix Makefiles")
 else()
     message(FATAL_ERROR "BGFX does not support the generator '${CMAKE_GENERATOR}'.")
 endif()
+
+# Hackily patch BGFX to allow building with merged NanoVG
+set(bgfx_PATCH_COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/overrides/bgfx" "<SOURCE_DIR>")
 
 # Download `bgfx`
 # and build it using `bx`.
@@ -109,10 +102,23 @@ set(bgfx_INCLUDE_DIR "${SOURCE_DIR}/include")
 set(bgfx_LIBRARIES_DIR "${SOURCE_DIR}/.build/${bgfx_SYSTEM_NAME}/bin")
 set(bgfx_LIBRARY "${bgfx_LIBRARIES_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}bgfx-shared-libRelease${CMAKE_SHARED_LIBRARY_SUFFIX}")
 set(bgfx_IMPLIB "${bgfx_LIBRARIES_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}bgfx-shared-libRelease${CMAKE_STATIC_LIBRARY_SUFFIX}")
+set(bgfx_LIBRARIES
+    "${bgfx_LIBRARY}"
+    "${bgfx_IMPLIB}"
+    "${bgfx_LIBRARIES_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}bgfxRelease${CMAKE_STATIC_LIBRARY_SUFFIX}"
+)
 set(bgfx_BINARIES
     "${bgfx_LIBRARIES_DIR}/shadercRelease${CMAKE_EXECUTABLE_SUFFIX}"
     "${bgfx_LIBRARIES_DIR}/texturecRelease${CMAKE_EXECUTABLE_SUFFIX}"
     "${bgfx_LIBRARIES_DIR}/geometrycRelease${CMAKE_EXECUTABLE_SUFFIX}"
+)
+set(bgfx_INCLUDES
+    "${SOURCE_DIR}/include/bgfx/c99/bgfx.h"
+    "${SOURCE_DIR}/include/bgfx/platform.h"
+    "${SOURCE_DIR}/include/bgfx/defines.h"
+    "${SOURCE_DIR}/examples/common/nanovg/nanovg.h"
+    "${SOURCE_DIR}/scripts/idl.lua"
+    "${SOURCE_DIR}/scripts/bgfx.idl"
 )
 
 # Workaround for https://cmake.org/Bug/view.php?id=15052
@@ -146,5 +152,6 @@ if("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
 endif()
 
 # Create install commands to install the shared libs.
-truss_copy_libraries(bgfx_EXTERNAL "${bgfx_LIBRARY}")
+truss_copy_libraries(bgfx_EXTERNAL "${bgfx_LIBRARIES}")
+truss_copy_includes(bgfx_EXTERNAL "${bgfx_INCLUDES}")
 truss_copy_binaries(bgfx_EXTERNAL "${bgfx_BINARIES}")

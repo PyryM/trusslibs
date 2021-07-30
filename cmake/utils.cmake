@@ -18,11 +18,6 @@ function(truss_copy_libraries target target_libraries)
             )
         endif()
 
-        # On Windows, we delay loading for a bit to allow time for an RPATH modification.
-        if("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
-            set_property(TARGET truss APPEND_STRING PROPERTY LINK_FLAGS "/DELAYLOAD:${library_file} ")
-        endif()
-
         # Create a rule to copy the library to the `lib` directory.
         add_custom_command(
             TARGET "${target}" POST_BUILD
@@ -47,6 +42,23 @@ function(truss_copy_binaries target target_binaries)
             ARGS -E copy "${binary_path}" "${DIST_DIR}/bin/${binary_file}"
             BYPRODUCTS "${DIST_DIR}/lib/${binary_file}"
             COMMENT "Installed '${binary_file}' binary to distribution directory."
+        )
+    endforeach()
+endfunction()
+
+# Copies a list of includes to the `dist` bin directory.
+function(truss_copy_includes target target_includes)
+    foreach(include_path ${target_includes})
+        # Extract include name from full path.
+        get_filename_component(include_file "${include_path}" NAME)
+
+        # Create a rule to copy the library to the `lib` directory.
+        add_custom_command(
+            TARGET "${target}" POST_BUILD
+            COMMAND "${CMAKE_COMMAND}"
+            ARGS -E copy "${include_path}" "${DIST_DIR}/include/${include_file}"
+            BYPRODUCTS "${DIST_DIR}/include/${include_file}"
+            COMMENT "Installed '${include_file}' include to distribution directory."
         )
     endforeach()
 endfunction()

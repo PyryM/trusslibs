@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.3)
 
-project(truss)
+project(trusslibs)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(CMAKE_CXX_STANDARD 11)
 include(utils)
@@ -13,7 +13,7 @@ set(DIST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/dist")
 # Install and build required dependencies.
 # (BGFX, SDL)
 include(bgfx)
-#include(sdl)
+include(sdl)
 
 # If the user attempts to install, politely inform them that it has no effect.
-install(CODE "MESSAGE(WARNING \"\nTruss cannot be installed to the system. Typically, the 'dist' directory is re-distributed as a self-contained application.\")")
+install(CODE "MESSAGE(WARNING \"\nTrusslibs cannot be installed to the system. Typically, the 'dist' directory is re-distributed as a self-contained application.\")")
