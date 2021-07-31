@@ -39,10 +39,10 @@ BX_PRAGMA_DIAGNOSTIC_POP();
 
 // PATCHED SECTION vvvvvv
 // Need to have stb truetype and stb image actually produce implementations
-#define STB_TRUETYPE_IMPLEMENTATION
+//#define STB_TRUETYPE_IMPLEMENTATION
 // Workaround for: https://github.com/nothings/stb/issues/1171
 // TODO: remove when STB fixes it
-#define STBTT_RASTERIZER_VERSION 1 
+//#define STBTT_RASTERIZER_VERSION 1 
 #include <stb/stb_truetype.h>
 // PATCHED SECTION ^^^^^^
 
