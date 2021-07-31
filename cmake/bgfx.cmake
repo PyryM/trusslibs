@@ -53,10 +53,10 @@ endif()
 if("${CMAKE_GENERATOR}" MATCHES "Visual Studio 16 2019")
     set(bgfx_SYSTEM_NAME "win64_vs2019")
     set(bgfx_COMPILER "vs2019")
-    set(bgfx_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "BX_DIR=${bx_DIR}" "BIMG_DIR=${bimg_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --with-tools --with-nanovg --with-shared-lib "${bgfx_COMPILER}")
+    set(bgfx_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "BX_DIR=${bx_DIR}" "BIMG_DIR=${bimg_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --with-imgui --with-nanovg --with-shared-lib "${bgfx_COMPILER}")
     set(bgfx_BUILD_COMMAND "${CMAKE_VS_DEVENV_COMMAND}" "<SOURCE_DIR>/.build/projects/${bgfx_COMPILER}/bgfx.sln" /Build Release|x64)
 elseif("${CMAKE_GENERATOR}" STREQUAL "Unix Makefiles")
-    set(bgfx_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "BX_DIR=${bx_DIR}" "BIMG_DIR=${bimg_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --with-tools --with-nanovg --with-shared-lib "--gcc=${bgfx_GENIE_GCC}" gmake)
+    set(bgfx_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "BX_DIR=${bx_DIR}" "BIMG_DIR=${bimg_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --with-min-tools --with-imgui --with-nanovg --with-shared-lib "--gcc=${bgfx_GENIE_GCC}" gmake)
     set(bgfx_BUILD_COMMAND "$(MAKE)" -C "<SOURCE_DIR>/.build/projects/gmake-${bgfx_SYSTEM_NAME}" config=release64)
     if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
         set(bgfx_SYSTEM_NAME "linux64_gcc")
@@ -126,6 +126,8 @@ set(bgfx_INCLUDES
     "${SOURCE_DIR}/include/bgfx/platform.h"
     "${SOURCE_DIR}/include/bgfx/defines.h"
     "${SOURCE_DIR}/examples/common/nanovg/nanovg.h"
+    "${SOURCE_DIR}/examples/common/imgui/cimgui.h"
+    "${SOURCE_DIR}/examples/common/imgui/imgui.h"
     "${SOURCE_DIR}/scripts/idl.lua"
     "${SOURCE_DIR}/scripts/bgfx.idl"
 )

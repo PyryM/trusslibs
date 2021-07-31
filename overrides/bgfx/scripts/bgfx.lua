@@ -178,6 +178,15 @@ function bgfxProjectBase(_kind, _defines)
 		}
 	end
 
+	if _OPTIONS["with-imgui"] then
+		files {
+			path.join(BGFX_DIR, "examples/common/imgui/**.cpp"),
+			path.join(BGFX_DIR, "examples/common/imgui/**.h"),
+			path.join(BGFX_DIR, "3rdparty/dear-imgui/**.cpp"),
+			path.join(BGFX_DIR, "3rdparty/dear-imgui/**.h")
+		}
+	end
+
 	overridefiles(BGFX_DIR, path.join(BGFX_DIR, "../bgfx-gnm"), {
 		path.join(BGFX_DIR, "src/renderer_gnm.cpp"),
 		path.join(BGFX_DIR, "src/renderer_gnm.h"),

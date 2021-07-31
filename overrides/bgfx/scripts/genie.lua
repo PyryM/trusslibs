@@ -41,6 +41,11 @@ newoption {
 }
 
 newoption {
+	trigger = "with-min-tools",
+	description = "Enable building minimal tools (shaderc+texturec).",
+}
+
+newoption {
 	trigger = "with-combined-examples",
 	description = "Enable building examples (combined as single executable).",
 }
@@ -58,6 +63,11 @@ newoption {
 newoption {
 	trigger = "with-nanovg",
 	description = "Enable directly building NanoVG into libraries."
+}
+
+newoption {
+	trigger = "with-imgui",
+	description = "Enable directly building Dear ImGui + C API into libraries."
 }
 
 newaction {
@@ -529,7 +539,7 @@ dofile(path.join(BX_DIR,   "scripts/bx.lua"))
 dofile(path.join(BIMG_DIR, "scripts/bimg.lua"))
 dofile(path.join(BIMG_DIR, "scripts/bimg_decode.lua"))
 
-if _OPTIONS["with-tools"] then
+if _OPTIONS["with-tools"] or _OPTIONS["with-min-tools"] then
 	dofile(path.join(BIMG_DIR, "scripts/bimg_encode.lua"))
 end
 
@@ -614,4 +624,8 @@ if _OPTIONS["with-tools"] then
 	dofile "texturev.lua"
 	dofile "geometryc.lua"
 	dofile "geometryv.lua"
+elseif _OPTIONS["with-min-tools"] then
+	group "tools"
+	dofile "shaderc.lua"
+	dofile "texturec.lua"
 end
