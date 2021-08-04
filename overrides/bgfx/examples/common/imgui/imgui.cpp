@@ -238,10 +238,18 @@ struct OcornutImguiContext
 			if(_fontCount >= 1) 
 			{
 				m_font[ImGui::Font::Regular] = io.Fonts->AddFontFromMemoryTTF((void*)_fonts[0].data, (size_t)_fonts[0].datasize, _fontSize + _fonts[0].fontsizemod, &config, ranges);
+			} 
+			else
+			{
+				m_font[ImGui::Font::Regular] = io.Fonts->AddFontFromMemoryTTF( (void*)s_robotoRegularTtf,     sizeof(s_robotoRegularTtf),     _fontSize,      &config, ranges);
 			}
 			if(_fontCount >= 2) 
 			{
 				m_font[ImGui::Font::Mono   ] = io.Fonts->AddFontFromMemoryTTF((void*)_fonts[1].data, (size_t)_fonts[1].datasize, _fontSize + _fonts[1].fontsizemod, &config, ranges);
+			}
+			else 
+			{
+				m_font[ImGui::Font::Mono   ] = io.Fonts->AddFontFromMemoryTTF( (void*)s_robotoMonoRegularTtf, sizeof(s_robotoMonoRegularTtf), _fontSize-3.0f, &config, ranges);
 			}
 
 			config.MergeMode = true;
