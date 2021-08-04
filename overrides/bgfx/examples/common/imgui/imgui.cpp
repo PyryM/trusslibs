@@ -183,6 +183,98 @@ struct OcornutImguiContext
 		}
 	}
 
+	void createWithFonts(float _fontSize, bgfx_imgui_font_info* _fonts, int _fontCount) {
+		m_viewId = 255;
+		m_lastScroll = 0;
+		m_last = bx::getHPCounter();
+
+		ImGui::SetAllocatorFunctions(memAlloc, memFree, NULL);
+
+		m_imgui = ImGui::CreateContext();
+
+		ImGuiIO& io = ImGui::GetIO();
+
+		io.DisplaySize = ImVec2(1280.0f, 720.0f);
+		io.DeltaTime   = 1.0f / 60.0f;
+		io.IniFilename = NULL;
+
+		setupStyle(true);
+
+		bgfx::RendererType::Enum type = bgfx::getRendererType();
+		m_program = bgfx::createProgram(
+			  bgfx::createEmbeddedShader(s_embeddedShaders, type, "vs_ocornut_imgui")
+			, bgfx::createEmbeddedShader(s_embeddedShaders, type, "fs_ocornut_imgui")
+			, true
+			);
+
+		u_imageLodEnabled = bgfx::createUniform("u_imageLodEnabled", bgfx::UniformType::Vec4);
+		m_imageProgram = bgfx::createProgram(
+			  bgfx::createEmbeddedShader(s_embeddedShaders, type, "vs_imgui_image")
+			, bgfx::createEmbeddedShader(s_embeddedShaders, type, "fs_imgui_image")
+			, true
+			);
+
+		m_layout
+			.begin()
+			.add(bgfx::Attrib::Position,  2, bgfx::AttribType::Float)
+			.add(bgfx::Attrib::TexCoord0, 2, bgfx::AttribType::Float)
+			.add(bgfx::Attrib::Color0,    4, bgfx::AttribType::Uint8, true)
+			.end();
+
+		s_tex = bgfx::createUniform("s_tex", bgfx::UniformType::Sampler);
+
+		uint8_t* data;
+		int32_t width;
+		int32_t height;
+		{
+			ImFontConfig config;
+			config.FontDataOwnedByAtlas = false;
+			config.MergeMode = false;
+//			config.MergeGlyphCenterV = true;
+
+			const ImWchar* ranges = io.Fonts->GetGlyphRangesCyrillic();
+			m_font[0] = NULL;
+			m_font[1] = NULL;
+			if(_fontCount >= 1) 
+			{
+				m_font[ImGui::Font::Regular] = io.Fonts->AddFontFromMemoryTTF((void*)_fonts[0].data, (size_t)_fonts[0].datasize, _fontSize + _fonts[0].fontsizemod, &config, ranges);
+			}
+			if(_fontCount >= 2) 
+			{
+				m_font[ImGui::Font::Mono   ] = io.Fonts->AddFontFromMemoryTTF((void*)_fonts[1].data, (size_t)_fonts[1].datasize, _fontSize + _fonts[1].fontsizemod, &config, ranges);
+			}
+
+			config.MergeMode = true;
+			config.DstFont   = m_font[ImGui::Font::Regular];
+
+			for (uint32_t ii = 0; ii < BX_COUNTOF(s_fontRangeMerge); ++ii)
+			{
+				const FontRangeMerge& frm = s_fontRangeMerge[ii];
+
+				io.Fonts->AddFontFromMemoryTTF( (void*)frm.data
+						, (int)frm.size
+						, _fontSize-3.0f
+						, &config
+						, frm.ranges
+						);
+			}
+		}
+
+		io.Fonts->GetTexDataAsRGBA32(&data, &width, &height);
+
+		m_texture = bgfx::createTexture2D(
+			  (uint16_t)width
+			, (uint16_t)height
+			, false
+			, 1
+			, bgfx::TextureFormat::BGRA8
+			, 0
+			, bgfx::copy(data, width*height*4)
+			);
+
+		ImGui::InitDockContext();
+	}
+
 	void create(float _fontSize, bx::AllocatorI* _allocator)
 	{
 		m_allocator = _allocator;
@@ -498,6 +590,10 @@ void igBGFXCreate(float _fontSize) {
 	imguiCreate(_fontSize, NULL);
 }
 
+void igBGFXCreateWithFonts(float _fontSize, bgfx_imgui_font_info* _fonts, uint32_t _fontcount) {
+	s_ctx.createWithFonts(_fontSize, _fonts, _fontcount);
+}
+
 void igBGFXDestroy() {
 	imguiDestroy();
 }
@@ -514,6 +610,13 @@ void igBGFXEndFrame() {
 ImTextureID igBGFXTexToId(bgfx_texture_handle_t _handle, uint8_t _flags, uint8_t _mip) {
 	union { bgfx_texture_handle_t c; bgfx::TextureHandle cpp; } handle = { _handle };
 	return ImGui::toId(handle.cpp, _flags, _mip);
+}
+
+void igBGFXPushFont(uint32_t _fontid) {
+	if (_fontid < ImGui::Font::Count )
+	{
+		ImGui::PushFont( (ImGui::Font::Enum)_fontid );
+	}
 }
 
 BX_PRAGMA_DIAGNOSTIC_IGNORED_MSVC(4505); // error C4505: '' : unreferenced local function has been removed

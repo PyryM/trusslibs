@@ -156,8 +156,16 @@ namespace ImGui
 
 #define CIMGUI_API EXTERN API
 
+struct bgfx_imgui_font_info {
+	uint8_t* data;
+	uint32_t datasize;
+	float fontsizemod;
+	char* fontname;
+};
+
 // C API functions
 CIMGUI_API void igBGFXCreate(float _fontSize);
+CIMGUI_API void igBGFXCreateWithFonts(float _fontSize, bgfx_imgui_font_info* _fonts, uint32_t _fontcount);
 CIMGUI_API void igBGFXDestroy();
 
 CIMGUI_API void igBGFXBeginFrame(uint16_t _width, uint16_t _height, uint16_t _viewId);
@@ -165,6 +173,7 @@ CIMGUI_API void igBGFXEndFrame();
 
 // Note that in practice `ImTextureID` is a void*
 CIMGUI_API ImTextureID igBGFXTexToId(bgfx_texture_handle_t _handle, uint8_t _flags, uint8_t _mip);
+CIMGUI_API void igBGFXPushFont(uint32_t _fontid);
 // PATCHED ^^^^^^
 
 #endif // IMGUI_H_HEADER_GUARD
