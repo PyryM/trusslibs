@@ -14,6 +14,9 @@
 #include "imgui.h"
 #include "../bgfx_utils.h"
 
+#include <bimg/bimg.h>
+#include <bimg/decode.h>
+
 // PATCHED vvvvvvv
 // Just never use entry
 #define USE_ENTRY 0
@@ -625,6 +628,39 @@ void igBGFXPushFont(uint32_t _fontid) {
 	{
 		ImGui::PushFont( (ImGui::Font::Enum)_fontid );
 	}
+}
+
+bool igBGFXUtilDecodeImage(uint8_t* data, uint32_t datasize, bgfx_util_imagedata* dest) {
+	if(dest == NULL) return false;
+	dest->data = NULL;
+	dest->datasize = 0;
+	dest->width = 0;
+	dest->height = 0;
+	if (data == NULL || datasize == 0) return false;
+
+	auto container = bimg::imageParse(
+		  &default_allocator
+		, data
+		, datasize
+		, bimg::TextureFormat::RGBA8
+	);
+	if(container == NULL) return false;
+	dest->data = (uint8_t*)container->m_data;
+	dest->datasize = container->m_size;
+	dest->width = container->m_width;
+	dest->height = container->m_height;
+	return true;
+}
+
+void igBGFXUtilReleaseImage(bgfx_util_imagedata* imgdata) {
+	if (imgdata != NULL && imgdata->data != NULL)
+	{
+		BX_FREE(&default_allocator, imgdata->data);
+		imgdata->data = NULL;
+		imgdata->datasize = 0;
+		imgdata->width = 0;
+		imgdata->height = 0;
+	} 
 }
 
 BX_PRAGMA_DIAGNOSTIC_IGNORED_MSVC(4505); // error C4505: '' : unreferenced local function has been removed

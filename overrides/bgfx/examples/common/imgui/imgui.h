@@ -164,6 +164,13 @@ struct bgfx_imgui_font_info {
 };
 
 // C API functions
+struct bgfx_util_imagedata {
+	uint8_t* data;
+	uint32_t datasize;
+	uint32_t width;
+	uint32_t height;
+};
+
 CIMGUI_API void igBGFXCreate(float _fontSize);
 CIMGUI_API void igBGFXCreateWithFonts(float _fontSize, bgfx_imgui_font_info* _fonts, uint32_t _fontcount);
 CIMGUI_API void igBGFXDestroy();
@@ -174,6 +181,9 @@ CIMGUI_API void igBGFXEndFrame();
 // Note that in practice `ImTextureID` is a void*
 CIMGUI_API ImTextureID igBGFXTexToId(bgfx_texture_handle_t _handle, uint8_t _flags, uint8_t _mip);
 CIMGUI_API void igBGFXPushFont(uint32_t _fontid);
+
+CIMGUI_API bool igBGFXUtilDecodeImage(uint8_t* data, uint32_t datasize, bgfx_util_imagedata* dest);
+CIMGUI_API void igBGFXUtilReleaseImage(bgfx_util_imagedata* imgdata);
 // PATCHED ^^^^^^
 
 #endif // IMGUI_H_HEADER_GUARD

@@ -185,6 +185,9 @@ function bgfxProjectBase(_kind, _defines)
 			path.join(BGFX_DIR, "3rdparty/dear-imgui/**.cpp"),
 			path.join(BGFX_DIR, "3rdparty/dear-imgui/**.h")
 		}
+		links {
+			"bimg_decode"
+		}
 	end
 
 	overridefiles(BGFX_DIR, path.join(BGFX_DIR, "../bgfx-gnm"), {
