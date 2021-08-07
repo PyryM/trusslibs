@@ -634,6 +634,7 @@ bool igBGFXUtilDecodeImage(uint8_t* data, uint32_t datasize, bgfx_util_imagedata
 	if(dest == NULL) return false;
 	dest->data = NULL;
 	dest->datasize = 0;
+	dest->_container = NULL;
 	dest->width = 0;
 	dest->height = 0;
 	if (data == NULL || datasize == 0) return false;
@@ -647,17 +648,19 @@ bool igBGFXUtilDecodeImage(uint8_t* data, uint32_t datasize, bgfx_util_imagedata
 	if(container == NULL) return false;
 	dest->data = (uint8_t*)container->m_data;
 	dest->datasize = container->m_size;
+	dest->_container = container;
 	dest->width = container->m_width;
 	dest->height = container->m_height;
 	return true;
 }
 
 void igBGFXUtilReleaseImage(bgfx_util_imagedata* imgdata) {
-	if (imgdata != NULL && imgdata->data != NULL)
+	if (imgdata != NULL && imgdata->_container != NULL)
 	{
-		BX_FREE(&default_allocator, imgdata->data);
+		bimg::imageFree((bimg::ImageContainer*)imgdata->_container);
 		imgdata->data = NULL;
 		imgdata->datasize = 0;
+		imgdata->_container = NULL;
 		imgdata->width = 0;
 		imgdata->height = 0;
 	} 

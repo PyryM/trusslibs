@@ -166,6 +166,7 @@ struct bgfx_imgui_font_info {
 // C API functions
 struct bgfx_util_imagedata {
 	uint8_t* data;
+	void* _container;
 	uint32_t datasize;
 	uint32_t width;
 	uint32_t height;
