@@ -119,7 +119,6 @@ endif()
 set(bgfx_BINARIES
     "${bgfx_LIBRARIES_DIR}/shadercRelease${CMAKE_EXECUTABLE_SUFFIX}"
     "${bgfx_LIBRARIES_DIR}/texturecRelease${CMAKE_EXECUTABLE_SUFFIX}"
-    "${bgfx_LIBRARIES_DIR}/geometrycRelease${CMAKE_EXECUTABLE_SUFFIX}"
 )
 set(bgfx_INCLUDES
     "${SOURCE_DIR}/include/bgfx/c99/bgfx.h"
