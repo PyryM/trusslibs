@@ -131,6 +131,13 @@ set(bgfx_INCLUDES
     "${SOURCE_DIR}/scripts/bgfx.idl"
 )
 
+set(bgfx_SHADERINCLUDES
+    "${SOURCE_DIR}/src/bgfx_compute.sh"
+    "${SOURCE_DIR}/src/bgfx_shader.sh"
+    "${SOURCE_DIR}/examples/common/common.sh"
+    "${SOURCE_DIR}/examples/common/shaderlib.sh"
+)
+
 # Workaround for https://cmake.org/Bug/view.php?id=15052
 file(MAKE_DIRECTORY "${bx_INCLUDE_DIR}")
 file(MAKE_DIRECTORY "${bgfx_INCLUDE_DIR}")
@@ -164,4 +171,5 @@ endif()
 # Create install commands to install the shared libs.
 truss_copy_libraries(bgfx_EXTERNAL "${bgfx_LIBRARIES}")
 truss_copy_includes(bgfx_EXTERNAL "bgfx" "${bgfx_INCLUDES}")
+truss_copy_includes(bgfx_EXTERNAL "bgfx/shader" "${bgfx_SHADERINCLUDES}")
 truss_copy_binaries(bgfx_EXTERNAL "${bgfx_BINARIES}")
