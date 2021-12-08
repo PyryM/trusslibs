@@ -23,6 +23,7 @@ ExternalProject_Add(sdl_EXTERNAL
 ExternalProject_Get_Property(sdl_EXTERNAL SOURCE_DIR BINARY_DIR)
 set(sdl_INCLUDE_DIRS "${BINARY_DIR}/include" "${SOURCE_DIR}/include")
 set(sdl_LIBRARIES_DIR "${BINARY_DIR}")
+set(sdl_DIR "${SOURCE_DIR}")
 
 # Workaround for Windows compilation being a _little_ different.
 if("${CMAKE_SYSTEM_NAME}" MATCHES "Windows")

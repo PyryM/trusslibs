@@ -12,8 +12,10 @@ set(DIST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/dist")
 
 # Install and build required dependencies.
 # (BGFX, SDL)
-include(bgfx)
+include(bx)
+#include(bgfx)
 include(sdl)
+include(soloud)
 
 # If the user attempts to install, politely inform them that it has no effect.
 install(CODE "MESSAGE(WARNING \"\nTrusslibs cannot be installed to the system. Typically, the 'dist' directory is re-distributed as a self-contained application.\")")
