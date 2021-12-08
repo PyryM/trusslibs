@@ -24,7 +24,7 @@ set(soloud_PATCH_COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_S
 # Download `soloud`
 # and build it using `genie`.
 ExternalProject_Add(soloud_EXTERNAL
-    DEPENDS sdl_EXTERNAL
+    DEPENDS bx_EXTERNAL sdl_EXTERNAL
     GIT_REPOSITORY "https://github.com/jarikomppa/soloud.git"
     GIT_TAG "1157475881da0d7f76102578255b937c7d4e8f57"
     CONFIGURE_COMMAND ${soloud_CONFIGURE_COMMAND}
