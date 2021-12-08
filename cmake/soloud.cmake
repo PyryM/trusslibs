@@ -7,7 +7,9 @@ endif()
 
 # Configure platform-specific build commands.
 if("${CMAKE_GENERATOR}" MATCHES "Visual Studio 16 2019")
-    set(soloud_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "SDL2_DIR=${sdl_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --file=build/genie.lua --platform=x64 --with-sdl2 "${soloud_COMPILER}")
+    #SDL backend on windows doesn't seem as good so just don't compile it!
+    #set(soloud_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "SDL2_DIR=${sdl_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --file=build/genie.lua --platform=x64 --with-sdl2 "${soloud_COMPILER}")
+    set(soloud_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "SDL2_DIR=${sdl_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --file=build/genie.lua --platform=x64 "${soloud_COMPILER}")
     set(soloud_BUILD_COMMAND "${CMAKE_VS_DEVENV_COMMAND}" "<SOURCE_DIR>/build/${soloud_COMPILER}/SoLoud.sln" /Build Release|x64)
 elseif("${CMAKE_GENERATOR}" STREQUAL "Unix Makefiles")
     set(soloud_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "SDL2_DIR=${sdl_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --file=build/genie.lua --with-sdl2 "${soloud_COMPILER}")
@@ -45,11 +47,13 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
         "${soloud_LIBRARIES_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}soloud_x64${CMAKE_SHARED_LIBRARY_SUFFIX}"
         "${soloud_LIBRARIES_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}soloud_x64${CMAKE_STATIC_LIBRARY_SUFFIX}"
         "${soloud_LIBRARIES_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}soloud_static_x64${CMAKE_STATIC_LIBRARY_SUFFIX}"
+        "${soloud_LIBRARIES_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}soloud_c_static_x64${CMAKE_STATIC_LIBRARY_SUFFIX}"
     )
 else()
     set(soloud_LIBRARIES
         "${soloud_LIBRARIES_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}soloud${CMAKE_SHARED_LIBRARY_SUFFIX}"
         "${soloud_LIBRARIES_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}soloud_static${CMAKE_STATIC_LIBRARY_SUFFIX}"
+        "${soloud_LIBRARIES_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}soloud_c_static${CMAKE_STATIC_LIBRARY_SUFFIX}"
     )
 endif()
 

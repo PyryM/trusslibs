@@ -426,7 +426,8 @@ solution "SoLoud"
 	targetdir "../bin"
 	debugdir "../bin"
 	flags { "NoExceptions", "NoRTTI", "NoPCH" }
-    if (os.is("Windows")) then flags {"StaticRuntime"} end
+	--- No, use the dynamic CRT!!!!
+  -- if (os.is("Windows")) then flags {"StaticRuntime"} end
 	if (os.is("Windows")) then defines { "_CRT_SECURE_NO_WARNINGS" } end
     configuration { "x32", "Debug" }
         targetsuffix "_x86_d"   
@@ -683,3 +684,23 @@ end
 		targetname "soloud"
 		implibdir("../lib")
 		implibname("soloud")
+
+
+	project "SoloudCStatic"
+		kind "StaticLib"
+		targetdir "../lib"
+		language "C++"
+		files
+		{
+		  "../src/c_api/**.c*"
+		}
+
+		includedirs
+		{
+		  "../src/**",
+		  "../include"
+		}
+
+		links {"SoloudStatic"}
+
+		targetname "soloud_c_static"
