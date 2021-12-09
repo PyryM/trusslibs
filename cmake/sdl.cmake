@@ -51,3 +51,6 @@ set_target_properties(sdl PROPERTIES
 
 # Create an install command to install the shared libs.
 truss_copy_libraries(sdl_EXTERNAL "${sdl_LIBRARY}")
+if("${CMAKE_SYSTEM_NAME}" MATCHES "Windows")
+    truss_copy_libraries(sdl_EXTERNAL "${sdl_IMPLIB}")
+endif()
