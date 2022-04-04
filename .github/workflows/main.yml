@@ -21,7 +21,7 @@ jobs:
         curl -LO http://archive.ubuntu.com/ubuntu/pool/main/libf/libffi/libffi6_3.2.1-8_amd64.deb
         sudo dpkg -i libffi6_3.2.1-8_amd64.deb
     - name: Setup MSVC Paths
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2019'
       uses: ilammy/msvc-dev-cmd@v1
     - uses: actions/checkout@v2
     - name: Run CMake
