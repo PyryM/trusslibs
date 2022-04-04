@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-2019]
     steps:
     - name: Install APT On Linux
       if: matrix.os == 'ubuntu-latest'
@@ -23,8 +23,6 @@ jobs:
     - name: Setup MSVC Paths
       if: matrix.os == 'windows-latest'
       uses: ilammy/msvc-dev-cmd@v1
-      with:
-        toolset: 16.11
     - uses: actions/checkout@v2
     - name: Run CMake
       run: |
@@ -37,7 +35,7 @@ jobs:
         cd build
         make -j 4
     - name: Build Windows
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2019'
       run: |
         cd build
         MSBuild trusslibs.sln /p:Configuration=Release /p:Platform=x64
@@ -47,7 +45,7 @@ jobs:
         cd dist
         zip -r "../trusslibs_${{ matrix.os }}.zip" bin lib include
     - name: Zip Archive (windows)
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2019'
       run: |
         cd dist
         7z a "../trusslibs_${{ matrix.os }}.zip" bin lib include
