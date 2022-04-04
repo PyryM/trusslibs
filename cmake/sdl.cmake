@@ -1,7 +1,7 @@
 include(ExternalProject)
 
 # Use this version of SDL.
-set(sdl_VERSION "2.0.14")
+set(sdl_VERSION "2.0.20")
 
 # Download `SDL` and build it using CMake.
 ExternalProject_Add(sdl_EXTERNAL
@@ -11,7 +11,7 @@ ExternalProject_Add(sdl_EXTERNAL
     CMAKE_GENERATOR "${CMAKE_GENERATOR}"
     CMAKE_ARGS
     "-DSDL_STATIC=OFF"
-    "-DVIDEO_WAYLAND=OFF"
+    "-DSDL_VIDEO_WAYLAND=OFF"
     "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE=<BINARY_DIR>"
     "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG=<BINARY_DIR>"
     "-DCMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE=<BINARY_DIR>"
