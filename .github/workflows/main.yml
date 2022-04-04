@@ -23,6 +23,8 @@ jobs:
     - name: Setup MSVC Paths
       if: matrix.os == 'windows-latest'
       uses: ilammy/msvc-dev-cmd@v1
+      with:
+        toolset: 16.XX
     - uses: actions/checkout@v2
     - name: Run CMake
       run: |
