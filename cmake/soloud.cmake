@@ -1,12 +1,12 @@
 # Create a system name compatible with BGFX build scripts.
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Windows")
-    set(soloud_COMPILER "vs2019")
+    set(soloud_COMPILER "vs2022")
 else()
     set(soloud_COMPILER "gmake")
 endif()
 
 # Configure platform-specific build commands.
-if("${CMAKE_GENERATOR}" MATCHES "Visual Studio 16 2019")
+if("${CMAKE_GENERATOR}" MATCHES "Visual Studio 17 2022")
     #SDL backend on windows doesn't seem as good so just don't compile it!
     #set(soloud_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "SDL2_DIR=${sdl_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --file=build/genie.lua --platform=x64 --with-sdl2 "${soloud_COMPILER}")
     set(soloud_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "SDL2_DIR=${sdl_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --file=build/genie.lua --platform=x64 "${soloud_COMPILER}")
