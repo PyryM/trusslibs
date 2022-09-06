@@ -1,7 +1,7 @@
 # Download `bimg` and extract source path.
 ExternalProject_Add(bimg_EXTERNAL
     GIT_REPOSITORY "https://github.com/bkaradzic/bimg.git"
-    GIT_TAG "8355d36befc90c1db82fca8e54f38bfb7eeb3530"
+    GIT_TAG "90ac47dfb0ac21e602ed46a91fcc34016e565b98"
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
@@ -30,9 +30,9 @@ else()
 endif()
 
 # Configure platform-specific build commands.
-if("${CMAKE_GENERATOR}" MATCHES "Visual Studio 16 2019")
-    set(bgfx_SYSTEM_NAME "win64_vs2019")
-    set(bgfx_COMPILER "vs2019")
+if("${CMAKE_GENERATOR}" MATCHES "Visual Studio 17 2022")
+    set(bgfx_SYSTEM_NAME "win64_vs2022")
+    set(bgfx_COMPILER "vs2022")
     set(bgfx_CONFIGURE_COMMAND "${CMAKE_COMMAND}" -E env "BX_DIR=${bx_DIR}" "BIMG_DIR=${bimg_DIR}" "${bx_GENIE}${CMAKE_EXECUTABLE_SUFFIX}" --with-dynamic-runtime --with-min-tools --with-imgui --with-nanovg --with-shared-lib "${bgfx_COMPILER}")
     set(bgfx_BUILD_COMMAND "${CMAKE_VS_DEVENV_COMMAND}" "<SOURCE_DIR>/.build/projects/${bgfx_COMPILER}/bgfx.sln" /Build Release|x64)
 elseif("${CMAKE_GENERATOR}" STREQUAL "Unix Makefiles")
@@ -53,7 +53,7 @@ set(bgfx_PATCH_COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_SOU
 ExternalProject_Add(bgfx_EXTERNAL
     DEPENDS bx_EXTERNAL bimg_EXTERNAL
     GIT_REPOSITORY "https://github.com/bkaradzic/bgfx.git"
-    GIT_TAG "e0d26507dc1982b53c7f80364637a9a2098f5055"
+    GIT_TAG "cb439deae3a2c85275b41645da6e25a5f805144a"
     CONFIGURE_COMMAND ${bgfx_CONFIGURE_COMMAND}
     BUILD_COMMAND ${bgfx_BUILD_COMMAND}
     PATCH_COMMAND ${bgfx_PATCH_COMMAND}

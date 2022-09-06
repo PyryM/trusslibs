@@ -1,7 +1,7 @@
 include(ExternalProject)
 
 # Use this version of SDL.
-set(sdl_VERSION "2.0.20")
+set(sdl_VERSION "2.24.0")
 
 # Download `SDL` and build it using CMake.
 ExternalProject_Add(sdl_EXTERNAL
@@ -51,6 +51,7 @@ set_target_properties(sdl PROPERTIES
 
 # Create an install command to install the shared libs.
 truss_copy_libraries(sdl_EXTERNAL "${sdl_LIBRARY}")
+truss_copy_libraries(sdl_EXTERNAL "${SOURCE_DIR}/../SDL2-${sdl_VERSION}.zip")
 if("${CMAKE_SYSTEM_NAME}" MATCHES "Windows")
     truss_copy_libraries(sdl_EXTERNAL "${sdl_IMPLIB}")
 endif()

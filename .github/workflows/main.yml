@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-2019]
+        os: [ubuntu-latest, windows-latest]
     steps:
     - name: Install APT On Linux
       if: matrix.os == 'ubuntu-latest'
@@ -21,7 +21,7 @@ jobs:
         curl -LO http://archive.ubuntu.com/ubuntu/pool/main/libf/libffi/libffi6_3.2.1-8_amd64.deb
         sudo dpkg -i libffi6_3.2.1-8_amd64.deb
     - name: Setup MSVC Paths
-      if: matrix.os == 'windows-2019'
+      if: matrix.os == 'windows-latest'
       uses: ilammy/msvc-dev-cmd@v1
     - uses: actions/checkout@v2
     - name: Run CMake
@@ -35,7 +35,7 @@ jobs:
         cd build
         make -j 4
     - name: Build Windows
-      if: matrix.os == 'windows-2019'
+      if: matrix.os == 'windows-latest'
       run: |
         cd build
         MSBuild trusslibs.sln /p:Configuration=Release /p:Platform=x64
@@ -45,7 +45,7 @@ jobs:
         cd dist
         zip -r "../trusslibs_${{ matrix.os }}.zip" bin lib include
     - name: Zip Archive (windows)
-      if: matrix.os == 'windows-2019'
+      if: matrix.os == 'windows-latest'
       run: |
         cd dist
         7z a "../trusslibs_${{ matrix.os }}.zip" bin lib include
