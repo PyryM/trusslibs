@@ -11,7 +11,7 @@ include(utils)
 set(DIST_DIR "${CMAKE_CURRENT_SOURCE_DIR}/dist")
 
 # Install and build required dependencies.
-# (BGFX, SDL)
+# (BGFX, SDL, SOLOUD)
 include(bx)
 include(bgfx)
 include(sdl)
