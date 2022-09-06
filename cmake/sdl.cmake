@@ -1,7 +1,7 @@
 include(ExternalProject)
 
 # Use this version of SDL.
-set(sdl_VERSION "2.0.20")
+set(sdl_VERSION "2.24.0")
 
 # Download `SDL` and build it using CMake.
 ExternalProject_Add(sdl_EXTERNAL
