@@ -3,7 +3,7 @@ include(ExternalProject)
 # Download `bx` and extract source path.
 ExternalProject_Add(bx_EXTERNAL
     GIT_REPOSITORY "https://github.com/bkaradzic/bx.git"
-    GIT_TAG "51f25ba638b9cb35eb2ac078f842a4bed0746d56"
+    GIT_TAG "d6576889dd1d152d5eed8c46a2ea87e64a7c848e"
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""

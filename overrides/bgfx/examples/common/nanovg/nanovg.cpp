@@ -38,11 +38,7 @@ BX_PRAGMA_DIAGNOSTIC_IGNORED_GCC("-Wunused-result");
 BX_PRAGMA_DIAGNOSTIC_POP();
 
 // PATCHED SECTION vvvvvv
-// Need to have stb truetype and stb image actually produce implementations
-//#define STB_TRUETYPE_IMPLEMENTATION
-// Workaround for: https://github.com/nothings/stb/issues/1171
-// TODO: remove when STB fixes it
-//#define STBTT_RASTERIZER_VERSION 1 
+// (Not sure if this include is actually required anymore?)
 #include <stb/stb_truetype.h>
 // PATCHED SECTION ^^^^^^
 

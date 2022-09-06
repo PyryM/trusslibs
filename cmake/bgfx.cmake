@@ -1,7 +1,7 @@
 # Download `bimg` and extract source path.
 ExternalProject_Add(bimg_EXTERNAL
     GIT_REPOSITORY "https://github.com/bkaradzic/bimg.git"
-    GIT_TAG "8355d36befc90c1db82fca8e54f38bfb7eeb3530"
+    GIT_TAG "90ac47dfb0ac21e602ed46a91fcc34016e565b98"
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
@@ -53,7 +53,7 @@ set(bgfx_PATCH_COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_CURRENT_SOU
 ExternalProject_Add(bgfx_EXTERNAL
     DEPENDS bx_EXTERNAL bimg_EXTERNAL
     GIT_REPOSITORY "https://github.com/bkaradzic/bgfx.git"
-    GIT_TAG "e0d26507dc1982b53c7f80364637a9a2098f5055"
+    GIT_TAG "cb439deae3a2c85275b41645da6e25a5f805144a"
     CONFIGURE_COMMAND ${bgfx_CONFIGURE_COMMAND}
     BUILD_COMMAND ${bgfx_BUILD_COMMAND}
     PATCH_COMMAND ${bgfx_PATCH_COMMAND}
