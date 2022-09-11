@@ -681,6 +681,11 @@ if (os.is("Windows")) then
 	linkoptions { "/DEF:\"../../src/c_api/soloud.def\"" }
 end
 
+		if (WITH_COREAUDIO == 1) then
+			links {"AudioToolbox.framework"}
+			links {"CoreFoundation.framework"}
+		end
+
 		targetname "soloud"
 		implibdir("../lib")
 		implibname("soloud")
